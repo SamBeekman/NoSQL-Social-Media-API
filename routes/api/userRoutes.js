@@ -21,10 +21,15 @@ router.get('/', async (req, res) => {
 
 router.get('/:userId', async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.userId });
+        const user = await User.findOne({ _id: req.params.userId })
+        .populate('thoughts')
+        .populate('friends')
+        .exec();
+
         if (!user) {
             return res.status(404).json({ message: 'No user with that Id' })
         }
+        
         res.json(user);
     } catch (err) {
         console.log(err);
@@ -37,7 +42,7 @@ router.get('/:userId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newUser = await User.create(req.body);
+        const newUser = (await User.create(req.body)).select('-__v');
         res.json(newUser);
     } catch (err) {
         console.log(err);
@@ -71,7 +76,7 @@ router.put('/:userId', async (req, res) => {
 
 router.delete('/:userId', async (req, res) => {
     try {
-        const user = await User.findOneAndDelete({ _id: req.params.userId });
+        const user = await User.findOneAndDelete({ _id: req.params.userId }).select('-__v');
 
         if (!user) {
             res.status(404).json({ message: 'No user with this Id!' });
