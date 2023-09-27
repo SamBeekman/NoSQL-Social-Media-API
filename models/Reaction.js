@@ -4,7 +4,7 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(), //keep this but disable mongoose default _id creation
+            default: this.ObjectId, //keep this but disable mongoose default _id creation
         },
         reactionBody: {
             type: String,
