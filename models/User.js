@@ -14,7 +14,7 @@ const userSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],  // may need ``
+      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please fill a valid email address'],
     },
     thoughts: [
       {
@@ -32,13 +32,18 @@ const userSchema = new Schema(
   {
     toJSON: {
       virtual: true,
+      getters: true,
     },
-  },
-
-  // Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
-
+    id: false,
+  }
 );
 
-const User = model('user', userSchema);
+// Create a virtual called friendCount that retrieves the length of the user's friends array field on query.
+
+userSchema.virtual('friendCount').get(function () {
+  return this.friends.length;
+});
+
+const User = model('User', userSchema);
 
 module.exports = User;

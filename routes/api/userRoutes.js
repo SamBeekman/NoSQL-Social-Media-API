@@ -42,7 +42,7 @@ router.get('/:userId', async (req, res) => {
 
 router.post('/', async (req, res) => {
     try {
-        const newUser = (await User.create(req.body)).select('-__v');
+        const newUser = (await User.create(req.body));
         res.json(newUser);
     } catch (err) {
         console.log(err);
@@ -60,7 +60,6 @@ router.put('/:userId', async (req, res) => {
             { $set: req.body },
             { new: true }
         )
-            .select('-__v');
 
         if (!user) {
             res.status(404).json({ message: 'No user with this Id!' });
@@ -72,11 +71,11 @@ router.put('/:userId', async (req, res) => {
     }
 });
 
-// DELETE to remove user by its _id
+// DELETE to remove user by its _id ------ BONUS: Remove a user's associated thoughts when deleted.
 
 router.delete('/:userId', async (req, res) => {
     try {
-        const user = await User.findOneAndDelete({ _id: req.params.userId }).select('-__v');
+        const user = await User.findOneAndDelete({ _id: req.params.userId });
 
         if (!user) {
             res.status(404).json({ message: 'No user with this Id!' });
@@ -88,40 +87,65 @@ router.delete('/:userId', async (req, res) => {
     }
 });
 
-
-
-
-
-// // BONUS
 
 // // /api/users/:userId/friends/:friendId
 
 // // POST to add a new friend to a user's friend list
 
-// router.post('/:userId/friends/:friendId', async (req, res) => {
-//     try {
-//         const friend = await User.create(req.body);
-//         res.json(friend);
-//     } catch (err) {
-//         console.log(err);
-//         return res.status(500).json(err);
-//     }
-// });
+router.post('/:userId/friends/:friendId', async (req, res) => {
+
+    try {
+        const userId = req.params.userId;
+        const friendId = req.params.friendId;
+
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }      
+          
+        const friend = await User.findById(friendId);      
+          if (!friend) {
+            return res.status(404).json({ message: 'Friend not found' });
+          }
+
+        user.friends.push(friend);
+
+        await user.save();
+  
+        res.status(200).json(user);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+});
 
 // // DELETE to remove a friend from a user's friend list
 
-// router.delete('/:userId/friends/:friendId', async (req, res) => {
-//     try {
-//         const user = await User.findOneAndDelete({ _id: req.params.userId });
+router.delete('/:userId/friends/:friendId', async (req, res) => {
+    try {
+        const userId = req.params.userId;
+        const friendId = req.params.friendId;
 
-//         if (!user) {
-//             res.status(404).json({ message: 'No user with this Id!' });
-//         }
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+          }      
+          
+        const friend = await User.findById(friendId);      
+          if (!friend) {
+            return res.status(404).json({ message: 'Friend not found' });
+          }
 
-//         res.json(user);
-//     } catch (err) {
-//         res.status(500).json(err);
-//     }
-// });
+          const index = user.friends.indexOf(friend);
+          user.friends.splice(index, 1);
+
+          await user.save();
+  
+        res.status(200).json(user);
+    } catch (err) {
+        console.log(err);
+        return res.status(500).json(err);
+    }
+});
 
 module.exports = router;

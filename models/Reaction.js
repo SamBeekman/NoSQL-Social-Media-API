@@ -1,10 +1,10 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, Types} = require('mongoose');
 
 const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: () => new Types.ObjectId(),
+            default: () => new Types.ObjectId(), //keep this but disable mongoose default _id creation
         },
         reactionBody: {
             type: String,
@@ -26,7 +26,10 @@ const reactionSchema = new Schema(
             getters: true,
             virtual: true,
         },
-    },
+        id: false,
+    }
 );
 
+
 module.exports = reactionSchema;
+
