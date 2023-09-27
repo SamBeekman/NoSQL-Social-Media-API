@@ -1,7 +1,7 @@
 
 # Social Media Api
 
-![License](https://img.shields.io/badge/License--blue)
+![MIT License](https://img.shields.io/badge/License--blue)
 
 
 ## Description
@@ -26,6 +26,9 @@ Clone the Repo and run 'npm i' to install the packages and then 'npm start' to r
 ## Usage
 
 Free to Use
+
+![image](https://github.com/SamBeekman/NoSQL-Social-Media-API/assets/131665093/6add7f0b-f08f-4806-88db-e2042c5829e8)
+
 
 
 ## Contributing
