@@ -4,7 +4,7 @@ const reactionSchema = new Schema(
     {
         reactionId: {
             type: Schema.Types.ObjectId,
-            default: this.ObjectId, //keep this but disable mongoose default _id creation
+            default: () => new Types.ObjectId(), //keep this but disable mongoose default _id creation
         },
         reactionBody: {
             type: String,
@@ -17,7 +17,8 @@ const reactionSchema = new Schema(
         },
         createdAt: {
             type: Date,
-            default: Date.now()
+            default: Date.now(),
+            // Use a getter method to format the timestamp on query
         },
     },
     {
@@ -26,7 +27,7 @@ const reactionSchema = new Schema(
             virtual: true,
         },
         id: false,
-        _id: false,
+    
     }
 );
 
