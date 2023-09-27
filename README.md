@@ -27,6 +27,8 @@ Clone the Repo and run 'npm i' to install the packages and then 'npm start' to r
 
 Free to Use
 
+Walkthrough video: https://drive.google.com/file/d/1QKpgNwt2MQddGn7-nbhsOyv5MVfC_koF/view
+
 ![image](https://github.com/SamBeekman/NoSQL-Social-Media-API/assets/131665093/6add7f0b-f08f-4806-88db-e2042c5829e8)
 
 
